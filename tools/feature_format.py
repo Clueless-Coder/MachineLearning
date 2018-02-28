@@ -83,7 +83,7 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
             test_list = tmp_list
         ### if all features are zero and you want to remove
         ### data points that are all zero, do that here
-        if remove_all_zeroes:
+        if 0 in tmp_list or "NaN" in tmp_list:
             append = False
             for item in test_list:
                 if item != 0 and item != "NaN":

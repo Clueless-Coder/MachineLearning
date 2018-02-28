@@ -27,7 +27,34 @@ plt.ylabel("grade")
 plt.show()
 ################################################################################
 
+from sklearn import neighbors
+from time import time
+from sklearn import model_selection
 
+#print "datapoints:",len(features_train)
+
+nbrs= filter( lambda x: x%2!=0, list(range(1,100)))
+
+cv_scores=[]
+##finding optimal K
+for k in nbrs:
+    clf=neighbors.KNeighborsClassifier()
+    scores=model_selection.cross_val_score(clf,features_train[:200],labels_train[:200],cv=10,scoring='accuracy')
+    cv_scores.append(scores.mean())
+
+
+print "k_optimal=",k_optimal
+k_optimal=nbrs[cv_scores.index(max(cv_scores))]
+clf=neighbors.KNeighborsClassifier(n_neighbors=k_optimal)
+t0=time()
+clf.fit(features_train[200:],labels_train[200:])
+print "Training Time:",round(time()-t0,3),"s"
+
+
+p0=time()
+pred=clf.predict(features_test)
+print "Pred time:",round(time()-p0 ,3),"s"
+print "Accuracy:",clf.score(features_test,labels_test)
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
